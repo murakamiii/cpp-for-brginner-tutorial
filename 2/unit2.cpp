@@ -1,5 +1,5 @@
 #include <iostream>
 
 int main() {
-    std::cout << 30 << "%\n";
+    std::cout << 1 + 1 << "%\n";
 }
