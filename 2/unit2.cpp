@@ -14,4 +14,8 @@ int main() {
     // unit11
     std::cout << 10 % 3 << "\n";
     std::cout << 4 % 2 << "\n";
+
+    // unit12
+    std::cout << 2 + 2 * 5 << "\n";
+    std::cout << (2 + 2) * 5 << "\n";
 }
