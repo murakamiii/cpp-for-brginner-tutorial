@@ -20,4 +20,5 @@ int main() {
     std::cout << (2 + 2) * 5 << "\n";
 
     // step up
+    std::cout << 1 - 3 - 5 + 8 << "\n";
 }
