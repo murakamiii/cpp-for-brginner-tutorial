@@ -1,7 +1,7 @@
 #include <iostream>
 
 int main() {
-    std::cout <<"ぼくはプラス。";
-    std::cout <<"ぼくはプラス。";
-    std::cout <<"ぼくはプラス。";
+    std::cout <<"ぼくはプラス。\n";
+    std::cout <<"ぼくはプラス。\n\n";
+    std::cout <<"ぼくはプラス。\n";
 }
