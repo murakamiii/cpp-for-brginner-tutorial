@@ -10,4 +10,8 @@ int main() {
     // unit10
     std::cout << 10 / 3 << "\n";
     std::cout << 10.0 / 3.0 << "\n";
+
+    // unit11
+    std::cout << 10 % 3 << "\n";
+    std::cout << 4 % 2 << "\n";
 }
