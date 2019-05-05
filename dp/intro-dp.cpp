@@ -8,23 +8,75 @@
 #include <vector>
 #include <sstream>
 #include <unordered_map>
+#include <numeric>
 
-struct dpEdge
+struct DpEdge
 {
   std::vector<int> nodes;
   int cost;
   bool isChecked;
 
-  dpEdge(std::vector<int> n, int c): nodes(n), cost(c), isChecked(false){}
+  DpEdge(std::vector<int> n, int c): nodes(n), cost(c), isChecked(false){}
 };
 
-struct dpNode
+struct DpNode
 {
   int cost;
   bool isMinimized;
 
-  dpNode(): cost(INT_MAX), isMinimized(false){}
+  DpNode(): cost(INT_MAX), isMinimized(false){}
 };
+
+template <typename T>
+struct VectorWrapper
+{
+  std::vector<T> raw_value;
+
+  VectorWrapper(std::vector<T> vec): raw_value(vec){}
+
+  VectorWrapper filter(std::function<bool(T)> f) {
+    std::vector<T> filtered;
+    std::copy_if(
+      raw_value.begin(),
+      raw_value.end(),
+      back_inserter(filtered),
+      f
+    );
+
+    return VectorWrapper(filtered);
+  }
+
+  template <typename U>
+  VectorWrapper<U> map(std::function<U(T)> f) {
+    std::vector<U> transformed;
+    std::transform(
+      raw_value.begin(),
+      raw_value.end(), 
+      std::back_inserter(transformed),
+      f
+    );
+    return VectorWrapper<U>(transformed);
+  }
+
+  template <typename V>
+  V reduce(V init, std::function<V(V,T)> f) {
+    return std::accumulate(
+      raw_value.begin(),
+      raw_value.end(), 
+      init,
+      f
+    );
+  }
+
+  void foreach(std::function<void(T)> f) {
+    std::for_each(
+      raw_value.begin(),
+      raw_value.end(),
+      f
+    );
+  }
+};
+
 
 /*
   g++ dp/intro-dp.cpp -std=c++17 -Wall --pedantic-errors && ./a.out dp/eg1.csv
@@ -37,8 +89,8 @@ int main(int argc, char const *argv[])
     std::cout << "読み込みエラー" << "\n";
   }
   
-  std::vector<dpEdge> edges;
-  std::unordered_map<int, dpNode> nodes;
+  std::vector<DpEdge> edges;
+  std::unordered_map<int, DpNode> nodes;
 
   std::string line;
   while(getline(ifs, line)){
@@ -52,7 +104,7 @@ int main(int argc, char const *argv[])
     std::vector<int> node_vec = {v[0], v[1]};
 
     edges.push_back(
-      dpEdge(node_vec, v[2])
+      DpEdge(node_vec, v[2])
     );
 
     std::vector<int> keys;
@@ -65,7 +117,7 @@ int main(int argc, char const *argv[])
 
     for(auto&& k : keys)
     {
-      nodes[k] = dpNode();
+      nodes[k] = DpNode();
     }
   }
   
@@ -73,15 +125,15 @@ int main(int argc, char const *argv[])
   nodes[target_node].isMinimized = true;
   nodes[target_node].cost = 0;
 
-  // while (std::all_of(nodes.begin(), nodes.end(), [](dpNode n) { return n.isMinimized; })){
+  // while (std::all_of(nodes.begin(), nodes.end(), [](DpNode n) { return n.isMinimized; })){
   while (true){
     std::cout << "\ntarget: " + std::to_string(target_node) << "\n";
-    std::vector<dpEdge> target_edges;
+    std::vector<DpEdge> target_edges;
     std::copy_if(
       edges.begin(), 
       edges.end(), 
       back_inserter(target_edges), 
-      [target_node](dpEdge e) { return std::find(e.nodes.begin(), e.nodes.end(), target_node) != e.nodes.end();}
+      [target_node](DpEdge e) { return std::find(e.nodes.begin(), e.nodes.end(), target_node) != e.nodes.end();}
     );
 
     // nodesのコストと比較して小さかったら更新する
@@ -105,12 +157,12 @@ int main(int argc, char const *argv[])
     
 
     // isMinimized: falseの中で最小コストのnodeを見つけ、target_nodeにする & isMinimizedをtrue
-    std::unordered_map<int, dpNode> filtered;
+    std::unordered_map<int, DpNode> filtered;
     std::copy_if(
       nodes.begin(),
       nodes.end(),
       std::inserter(filtered, filtered.end()),
-      [](std::pair<int, dpNode>  const& node_pair){ return node_pair.second.isMinimized == false; }
+      [](std::pair<int, DpNode>  const& node_pair){ return node_pair.second.isMinimized == false; }
     );
     auto min = std::min_element(
       filtered.begin(),
