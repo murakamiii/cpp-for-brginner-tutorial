@@ -101,24 +101,17 @@ int main(int argc, char const *argv[])
       v.push_back(std::stoi(buf));
     }
 
-    std::vector<int> node_vec = {v[0], v[1]};
+    std::vector<int> node_vec {v[0], v[1]};
 
     edges.push_back(
       DpEdge(node_vec, v[2])
     );
 
-    std::vector<int> keys;
-    std::copy_if(
-      node_vec.begin(), 
-      node_vec.end(), 
-      back_inserter(keys), 
-      [nodes](int x) { return nodes.find(x) == nodes.end();}
-    );
-
-    for(auto&& k : keys)
-    {
-      nodes[k] = DpNode();
-    }
+    VectorWrapper(node_vec)
+      .filter([=](int x) { return nodes.find(x) == nodes.end();})
+      .foreach([&](int key) { 
+        nodes[key] = DpNode();
+      });
   }
   
   int target_node = 0;
@@ -127,34 +120,26 @@ int main(int argc, char const *argv[])
 
   // while (std::all_of(nodes.begin(), nodes.end(), [](DpNode n) { return n.isMinimized; })){
   while (true){
-    std::cout << "\ntarget: " + std::to_string(target_node) << "\n";
-    std::vector<DpEdge> target_edges;
-    std::copy_if(
-      edges.begin(), 
-      edges.end(), 
-      back_inserter(target_edges), 
-      [target_node](DpEdge e) { return std::find(e.nodes.begin(), e.nodes.end(), target_node) != e.nodes.end();}
-    );
+    std::cout << "\ntarget: " << target_node << "\n";
 
     // nodesのコストと比較して小さかったら更新する
-    for(auto&& edge : target_edges)
-    {
-      std::vector<int> goal;
-      std::copy_if(
-        edge.nodes.begin(), 
-        edge.nodes.end(), 
-        back_inserter(goal), 
-        [target_node](int x) { return x != target_node;}
-      );
-      auto key = goal[0];
-      int calc_cost = edge.cost + nodes[target_node].cost;
-      std::cout << "key: " + std::to_string(key) << "\n";
-      std::cout << "calc_cost: " + std::to_string(calc_cost) << "\n";
-      if (calc_cost < nodes[key].cost) {
-        nodes[key].cost = calc_cost;
-      }      
-    }
-    
+    VectorWrapper(edges)
+      .filter([=](DpEdge e) { 
+        return std::find(e.nodes.begin(), e.nodes.end(), target_node) != e.nodes.end();
+      })
+      .foreach([&](DpEdge e) { 
+        int key = VectorWrapper(e.nodes)
+          .filter([=](int x) { return x != target_node;})
+          .raw_value[0];
+        int calc_cost = e.cost + nodes[target_node].cost;
+
+        std::cout << "key: " + std::to_string(key) << "\n";
+        std::cout << "calc_cost: " + std::to_string(calc_cost) << "\n";
+        
+        if (calc_cost < nodes[key].cost) {
+          nodes[key].cost = calc_cost;
+        }
+      });
 
     // isMinimized: falseの中で最小コストのnodeを見つけ、target_nodeにする & isMinimizedをtrue
     std::unordered_map<int, DpNode> filtered;
