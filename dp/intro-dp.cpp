@@ -112,28 +112,21 @@ int main(int argc, char const *argv[]) {
   nodes[target_node].cost = 0;
 
   while (true) {
-    std::cout << "\ntarget: " << target_node << "\n";
-
     // nodesのコストと比較して小さかったら更新する
     VectorWrapper(edges)
       .filter([=](DpEdge e) {
-        return std::find(
-          e.nodes.begin(),
-          e.nodes.end(),
-          target_node) != e.nodes.end();
+        return std::find(e.nodes.begin(), e.nodes.end(), target_node) != e.nodes.end();
       })
-      .foreach([&](DpEdge e) {
+      .map(std::function<std::pair<int, int>(DpEdge)>([&](DpEdge e) {
         int key = VectorWrapper(e.nodes)
           .filter([=](int x) { return x != target_node;})
           .raw_value[0];
         int calc_cost = e.cost + nodes[target_node].cost;
-
-        std::cout << "key: " + std::to_string(key) << "\n";
-        std::cout << "calc_cost: " + std::to_string(calc_cost) << "\n";
-
-        if (calc_cost < nodes[key].cost) {
-          nodes[key].cost = calc_cost;
-        }
+        return std::make_pair(key, calc_cost);
+      }))
+      .filter([&](std::pair<int, int> p) { return p.second < nodes[p.first].cost; })
+      .foreach([&](std::pair<int, int> p) {
+        nodes[p.first].cost = p.second;
       });
 
     // 未最適化の中で最小コストのnodeを見つけ、target_nodeにするisMinimizedをtrue
