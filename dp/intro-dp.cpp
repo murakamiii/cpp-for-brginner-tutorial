@@ -34,7 +34,7 @@ struct VectorWrapper {
   explicit VectorWrapper(std::vector<T> vec): raw_value(vec) {}
 
   VectorWrapper filter(std::function<bool(T)> f) {
-    std::vector<T> filtered;
+    std::vector<T> filtered = {};
     std::copy_if(
       raw_value.begin(),
       raw_value.end(),
