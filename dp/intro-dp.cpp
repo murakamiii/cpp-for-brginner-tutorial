@@ -27,48 +27,38 @@ struct DpNode {
   DpNode(): cost(INT_MAX), isMinimized(false){}
 };
 
-template <typename T>
-struct VectorWrapper {
+template <typename T> struct VectorWrapper {
   std::vector<T> raw_value;
-
   explicit VectorWrapper(std::vector<T> vec): raw_value(vec) {}
+
+  T min(std::function<bool(T,T)> f) {
+    auto min = std::min_element(raw_value.begin(), raw_value.end(), f);
+    return *min;
+  }
+
+  T max(std::function<bool(T,T)> f) {
+    auto max = std::max_element(raw_value.begin(), raw_value.end(), f);
+    return *max;
+  }
 
   VectorWrapper filter(std::function<bool(T)> f) {
     std::vector<T> filtered = {};
-    std::copy_if(
-      raw_value.begin(),
-      raw_value.end(),
-      back_inserter(filtered),
-      f);
-
+    std::copy_if(raw_value.begin(), raw_value.end(), back_inserter(filtered), f);
     return VectorWrapper(filtered);
   }
 
-  template <typename U>
-  VectorWrapper<U> map(std::function<U(T)> f) {
+  template <typename U> VectorWrapper<U> map(std::function<U(T)> f) {
     std::vector<U> transformed;
-    std::transform(
-      raw_value.begin(),
-      raw_value.end(),
-      std::back_inserter(transformed),
-      f);
+    std::transform(raw_value.begin(), raw_value.end(), std::back_inserter(transformed), f);
     return VectorWrapper<U>(transformed);
   }
 
-  template <typename V>
-  V reduce(V init, std::function<V(V, T)> f) {
-    return std::accumulate(
-      raw_value.begin(),
-      raw_value.end(),
-      init,
-      f);
+  template <typename V> V reduce(V& init, std::function<V(V, T)> f) {
+    return std::accumulate(raw_value.begin(), raw_value.end(), init, f);
   }
 
   void foreach(std::function<void(T)> f) {
-    std::for_each(
-      raw_value.begin(),
-      raw_value.end(),
-      f);
+    std::for_each(raw_value.begin(), raw_value.end(), f);
   }
 };
 
