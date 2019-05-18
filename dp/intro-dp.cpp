@@ -62,6 +62,42 @@ template <typename T> struct VectorWrapper {
   }
 };
 
+template <typename W, typename X> struct MapWrapper {
+  using map_type = std::unordered_map<W, X>;
+  using pair_type = std::pair<W, X>;
+  map_type raw_value;
+  explicit MapWrapper(map_type umap): raw_value(umap) {}
+
+  W min(std::function<bool(pair_type, pair_type)> f) {
+    auto min = std::min_element(raw_value.begin(), raw_value.end(), f);
+    return *min;
+  }
+
+  W max(std::function<bool(pair_type, pair_type)> f) {
+    auto max = std::max_element(raw_value.begin(), raw_value.end(), f);
+    return *max;
+  }
+
+  MapWrapper filter(std::function<bool(pair_type)> f) {
+    map_type filtered = {};
+    std::copy_if(raw_value.begin(), raw_value.end(), std::inserter(filtered), f);
+    return MapWrapper(filtered);
+  }
+
+  template <typename Y, typename Z> MapWrapper<Y, Z> map(std::function<std::pair<Y, Z>(pair_type)> f) {
+    std::unordered_map<Y, Z> transformed;
+    std::transform(raw_value.begin(), raw_value.end(), std::inserter(transformed), f);
+    return MapWrapper<Y, Z>(transformed);
+  }
+
+  template <typename VV> VV reduce(VV& init, std::function<VV(pair_type)> f) {
+    return std::accumulate(raw_value.begin(), raw_value.end(), init, f);
+  }
+
+  void foreach(std::function<void(pair_type)> f) {
+    std::for_each(raw_value.begin(), raw_value.end(), f);
+  }
+};
 
 /*
   g++ dp/intro-dp.cpp -std=c++17 -Wall --pedantic-errors && ./a.out dp/eg1.csv
