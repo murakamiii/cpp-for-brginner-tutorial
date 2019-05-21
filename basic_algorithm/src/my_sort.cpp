@@ -17,12 +17,12 @@ template <typename T> std::vector<T> bubble_sorted(const std::vector<T>& vec, bo
     std::copy(vec.begin(), vec.end(), sorted.begin());
     if (sorted.size() < 2) return sorted;
 
-    while (true) {
-        for (std::size_t i = 0 ; i + 1 <  sorted.size(); ++i) {
-            if ((is_ascending && sorted[i] > sorted[i+1]) || (!is_ascending && sorted[i] < sorted[i+1])) {
-                auto temp = sorted[i];
-                sorted[i] = sorted[i+1];
-                sorted[i+1] = temp;
+    for (std::size_t i = 0 ; i + 1 <  sorted.size(); ++i) {
+        for (std::size_t j = sorted.size() - 1 ; j > i ; --j) {
+            if ((is_ascending && sorted[j] < sorted[j-1]) || (!is_ascending && sorted[j] > sorted[j-1])) {
+                auto temp = sorted[j];
+                sorted[j] = sorted[j-1];
+                sorted[j-1] = temp;
             }
         }
         
