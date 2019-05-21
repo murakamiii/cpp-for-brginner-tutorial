@@ -1,2 +1,2 @@
 ## Thirdparty libraries
-* Catch2: see [src/basic_algorithm/libs/catch/LICENSE.txt](src/basic_algorithm/libs/catch/LICENSE.txt).
+* Catch2: see [basic_algorithm/libs/catch/LICENSE.txt](basic_algorithm/libs/catch/LICENSE.txt).
