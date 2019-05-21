@@ -5,8 +5,7 @@
 #include "my_sort.cpp"
 
 int main() {
-  std::vector<int> vec{11, 15, 13, 1, 234, 22, 3, 4, 13};
-  auto vec_sorted = bubble_sorted(vec, true);
+  auto vec_sorted = bubble_sorted(std::vector<int>({11, 15, 13, 1, 234, 22, 3, 4, 13}), true);
   
   std::cout << "vec_sorted: " ;
   std::for_each(begin(vec_sorted), end(vec_sorted), [&](auto i){ std::cout << i << " "; });
