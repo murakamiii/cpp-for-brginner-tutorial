@@ -6,9 +6,14 @@
 
 int main() {
   auto vec_sorted = bubble_sorted(std::vector<int>({11, 15, 13, 1, 234, 22, 3, 4, 13}), true);
+  auto vec_q_sorted = quick_sorted(std::vector<int>({11, 15, 13, 1, 234, 22, 3, 4, 13}), true);
   
   std::cout << "vec_sorted: " ;
   std::for_each(begin(vec_sorted), end(vec_sorted), [&](auto i){ std::cout << i << " "; });
+  std::cout << "\n" ;
+  
+  std::cout << "qck_sorted: " ;
+  std::for_each(begin(vec_q_sorted), end(vec_q_sorted), [&](auto i){ std::cout << i << " "; });
   std::cout << "\n" ;
   
   std::random_device rd{};
@@ -22,5 +27,10 @@ int main() {
   auto vec_rnd_sorted = bubble_sorted(vec_rnd, false);
   std::cout << "vec_rnd_sorted: " ;
   std::for_each(begin(vec_rnd_sorted), end(vec_rnd_sorted), [&](auto i){ std::cout << i << " "; });
+  std::cout << "\n" ;
+  
+  auto qck_rnd_sorted = quick_sorted(vec_rnd, false);
+  std::cout << "qck_rnd_sorted: " ;
+  std::for_each(begin(qck_rnd_sorted), end(qck_rnd_sorted), [&](auto i){ std::cout << i << " "; });
   std::cout << "\n" ;
 }
