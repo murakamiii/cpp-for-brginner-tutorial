@@ -71,9 +71,7 @@ template <typename T> std::vector<T> quick_sorted(const std::vector<T>& vec, boo
 }
 
 template <typename T> std::vector<T> insert_sorted(const std::vector<T>& vec, bool is_ascending) {
-    // 要素0の配列
     std::vector<T> sorted = {};
-    // for文
     for (auto &&ele : vec)
     {
         if (sorted.size() == 0)
