@@ -69,3 +69,34 @@ template <typename T> std::vector<T> quick_sorted(const std::vector<T>& vec, boo
     if (!is_ascending) { std::reverse(sorted.begin(), sorted.end()); }
     return sorted;
 }
+
+template <typename T> std::vector<T> insert_sorted(const std::vector<T>& vec, bool is_ascending) {
+    // 要素0の配列
+    std::vector<T> sorted = {};
+    // for文
+    for (auto &&ele : vec)
+    {
+        if (sorted.size() == 0)
+        {
+            sorted.push_back(ele);
+            continue;
+        }
+        
+        for (size_t i = 0; i < sorted.size(); i++)
+        {
+            if (sorted[i] >= ele)
+            {
+                sorted.insert(sorted.begin() + i, ele);
+                break;
+            }
+            
+            if (sorted.size() == i + 1) {
+                sorted.push_back(ele);
+                break;
+            }
+        }
+        
+    }
+    if (!is_ascending) { std::reverse(sorted.begin(), sorted.end()); }
+    return sorted;
+}

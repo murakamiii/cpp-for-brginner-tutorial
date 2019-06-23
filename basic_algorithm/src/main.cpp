@@ -33,4 +33,9 @@ int main() {
   std::cout << "qck_rnd_sorted: " ;
   std::for_each(begin(qck_rnd_sorted), end(qck_rnd_sorted), [&](auto i){ std::cout << i << " "; });
   std::cout << "\n" ;
+  
+  auto ins_rnd_sorted = insert_sorted(vec_rnd, false);
+  std::cout << "ins_rnd_sorted: " ;
+  std::for_each(begin(ins_rnd_sorted), end(ins_rnd_sorted), [&](auto i){ std::cout << i << " "; });
+  std::cout << "\n" ;
 }
