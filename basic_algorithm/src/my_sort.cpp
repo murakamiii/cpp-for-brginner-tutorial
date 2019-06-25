@@ -98,3 +98,40 @@ template <typename T> std::vector<T> insert_sorted(const std::vector<T>& vec, bo
     if (!is_ascending) { std::reverse(sorted.begin(), sorted.end()); }
     return sorted;
 }
+
+template <typename T> std::vector<T> merge(const std::vector<T>& vec) {
+    if (vec.size() <= 1)
+    {
+        return vec;
+    }
+
+    const auto v1 = merge(std::vector<T>(vec.begin(), vec.begin() + (vec.size() / 2)));
+    const auto v2 = merge(std::vector<T>(vec.begin() + (vec.size() / 2), vec.end()));
+
+    auto v1_idx = 0;
+    auto v2_idx = 0;
+    std::vector<T> merged {};
+    
+    while (v1_idx + 1 <= v1.size() && v2_idx + 1 <= v2.size())
+    {
+        if (v1[v1_idx] < v2[v2_idx])
+        {
+            merged.push_back(v1[v1_idx]);
+            v1_idx += 1;
+        } else {
+            merged.push_back(v2[v2_idx]);
+            v2_idx += 1;
+        }
+    }
+
+    merged.insert(merged.end(),v1.begin() + v1_idx, v1.end());
+    merged.insert(merged.end(),v2.begin() + v2_idx, v2.end());
+
+    return merged;    
+}
+
+template <typename T> std::vector<T> merge_sorted(const std::vector<T>& vec, bool is_ascending) {
+    auto sorted = merge(vec);
+    if (!is_ascending) { std::reverse(sorted.begin(), sorted.end()); }
+    return sorted;
+}

@@ -38,4 +38,9 @@ int main() {
   std::cout << "ins_rnd_sorted: " ;
   std::for_each(begin(ins_rnd_sorted), end(ins_rnd_sorted), [&](auto i){ std::cout << i << " "; });
   std::cout << "\n" ;
+
+  auto merge_rnd_sorted = merge_sorted(vec_rnd, false);
+  std::cout << "mer_rnd_sorted: " ;
+  std::for_each(begin(merge_rnd_sorted), end(merge_rnd_sorted), [&](auto i){ std::cout << i << " "; });
+  std::cout << "\n" ;
 }
