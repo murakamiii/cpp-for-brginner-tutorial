@@ -48,4 +48,12 @@ TEST_CASE("ソート", "[assert_sorted]") {
     REQUIRE(merge_sorted(vec_ten, true) == std::vector<int>({0, 1, 3, 4, 11, 13, 13, 15, 22, 234}));
     REQUIRE(merge_sorted(vec_ten, false) == std::vector<int>({234, 22, 15, 13, 13, 11, 4, 3, 1, 0}));
   }
+
+  SECTION("test heap sort") {
+    REQUIRE(heap_sorted(vec_empty, true) == std::vector<int>({}));
+    REQUIRE(heap_sorted(vec_one, true) == std::vector<int>({12}));
+    REQUIRE(heap_sorted(vec_two, true) == std::vector<int>({1, 2}));
+    REQUIRE(heap_sorted(vec_ten, true) == std::vector<int>({0, 1, 3, 4, 11, 13, 13, 15, 22, 234}));
+    REQUIRE(heap_sorted(vec_ten, false) == std::vector<int>({234, 22, 15, 13, 13, 11, 4, 3, 1, 0}));
+  }
 }

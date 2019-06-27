@@ -43,4 +43,9 @@ int main() {
   std::cout << "mer_rnd_sorted: " ;
   std::for_each(begin(merge_rnd_sorted), end(merge_rnd_sorted), [&](auto i){ std::cout << i << " "; });
   std::cout << "\n" ;
+  
+  auto heap_rnd_sorted = heap_sorted(vec_rnd, false);
+  std::cout << "hep_rnd_sorted: " ;
+  std::for_each(begin(heap_rnd_sorted), end(heap_rnd_sorted), [&](auto i){ std::cout << i << " "; });
+  std::cout << "\n" ;
 }

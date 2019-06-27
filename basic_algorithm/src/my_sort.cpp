@@ -1,6 +1,7 @@
 #include <vector>
 #include <numeric>
 #include <random>
+#include <utility>
 
 template <typename T> bool assert_sorted(const std::vector<T>& vec, bool is_ascending) {
     if (vec.size() < 2) { return true; }
@@ -133,5 +134,50 @@ template <typename T> std::vector<T> merge(const std::vector<T>& vec) {
 template <typename T> std::vector<T> merge_sorted(const std::vector<T>& vec, bool is_ascending) {
     auto sorted = merge(vec);
     if (!is_ascending) { std::reverse(sorted.begin(), sorted.end()); }
+    return sorted;
+}
+
+template <typename T> std::vector<T> make_heap(const std::vector<T>& vector) {
+    auto vec = vector;
+    for (int i = 1; i < vec.size(); i++)
+    {
+        auto current_idx = i;
+        auto parent_idx = ((i + 1) / 2) - 1;
+        while (parent_idx >= 0)
+        {
+            if (vec[current_idx] > vec[parent_idx])
+            {
+                std::swap(vec[current_idx], vec[parent_idx]);
+                current_idx = parent_idx;
+                parent_idx = ((parent_idx + 1) / 2) - 1;
+            } else {
+                break;
+            }
+        }
+    }
+
+    return vec;
+}
+
+template <typename T> std::vector<T> heap_sorted(const std::vector<T>& vector, bool is_ascending) {
+    auto vec = vector;
+    vec = make_heap(vec);
+    std::vector<T> sorted{};
+    while (vec.size() > 2)
+    {
+        sorted.push_back(vec[0]);
+        if (vec[1] > vec[2])
+        {
+            vec[0] = vec[1];
+            vec.erase(vec.begin() + 1);
+        } else {
+            vec[0] = vec[2];
+            vec.erase(vec.begin() + 2);
+        }
+        vec = make_heap(vec);
+    }
+    sorted.insert(sorted.end(), vec.begin(), vec.end());
+
+    if (is_ascending) { std::reverse(sorted.begin(), sorted.end()); }
     return sorted;
 }
