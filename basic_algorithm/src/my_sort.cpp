@@ -1,3 +1,6 @@
+#ifndef my_sort
+#define my_sort
+
 #include <vector>
 #include <numeric>
 #include <random>
@@ -181,3 +184,5 @@ template <typename T> std::vector<T> heap_sorted(const std::vector<T>& vector, b
     if (is_ascending) { std::reverse(sorted.begin(), sorted.end()); }
     return sorted;
 }
+
+#endif

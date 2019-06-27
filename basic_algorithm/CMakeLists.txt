@@ -4,6 +4,8 @@ project(BSC_ALG)
 
 set(main_src
   src/my_sort.cpp
+  src/my_container.h
+  src/my_container.cpp
   src/main.cpp
 )
 
@@ -14,6 +16,7 @@ enable_testing()
 
 set(test_src
   test/test_sort.cpp
+  test/test_container.cpp
 )
 add_executable(unit_test.out ${test_src}) 
 
