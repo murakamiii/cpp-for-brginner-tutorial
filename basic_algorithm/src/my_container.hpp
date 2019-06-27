@@ -1,16 +1,11 @@
-#ifndef my_container_cpp
-#define my_container_cpp
+#ifndef my_container_hpp
+#define my_container_hpp
 
 #include <optional>
 #include <vector>
-#include "my_container.h"
 
 namespace mystd
 {
-  int two() {
-    return 2;
-  }
-
   template <typename T> struct Stack
   {
     virtual ~Stack() {};
@@ -22,10 +17,14 @@ namespace mystd
   {
     VectorStack(std::vector<Element> container)
       :container(container){}
-    void push(Element ele) {
+    
+    void push(Element ele)
+    {
       container.push_back(ele);
     }
-    std::optional<Element> pop() {
+
+    std::optional<Element> pop() 
+    {
       if (container.size() == 0)
       {
         return std::nullopt;
@@ -35,11 +34,10 @@ namespace mystd
       container.pop_back();
       return ele;
     }
+
     private:
       std::vector<Element> container;
   };
-  
-
 } // namespace mystd
 
 #endif

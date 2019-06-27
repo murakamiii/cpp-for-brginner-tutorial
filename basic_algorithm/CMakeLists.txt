@@ -4,8 +4,7 @@ project(BSC_ALG)
 
 set(main_src
   src/my_sort.cpp
-  src/my_container.h
-  src/my_container.cpp
+  src/my_container.hpp
   src/main.cpp
 )
 
