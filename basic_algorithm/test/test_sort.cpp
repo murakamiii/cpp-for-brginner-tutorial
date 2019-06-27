@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "../libs/catch/catch.hpp"
 #include "../src/my_sort.cpp"
+#include "../src/my_container.hpp"
 
 TEST_CASE("ソート", "[assert_sorted]") {
   std::vector<int> vec_empty{};
@@ -56,4 +57,30 @@ TEST_CASE("ソート", "[assert_sorted]") {
     REQUIRE(heap_sorted(vec_ten, true) == std::vector<int>({0, 1, 3, 4, 11, 13, 13, 15, 22, 234}));
     REQUIRE(heap_sorted(vec_ten, false) == std::vector<int>({234, 22, 15, 13, 13, 11, 4, 3, 1, 0}));
   }
+}
+
+TEST_CASE("ベクタースタック", "[assert_vector_stack]") { 
+  std::vector<int> vec_empty{};
+  std::vector<int> vec_one{12};
+  std::vector<int> vec_two{2, 1};
+  
+  mystd::VectorStack<int> vecStack(vec_empty);
+  auto pval = vecStack.pop();
+  REQUIRE(pval.has_value() == false);
+  
+  vecStack.push(0);
+  pval = vecStack.pop();
+  REQUIRE(pval.has_value() == true);
+  REQUIRE(pval.value() == 0);
+  pval = vecStack.pop();
+  REQUIRE(pval.has_value() == false);
+
+  vecStack.push(99);
+  vecStack.push(100);
+  pval = vecStack.pop();
+  REQUIRE(pval.has_value() == true);
+  REQUIRE(pval.value() == 100);
+  pval = vecStack.pop();
+  REQUIRE(pval.has_value() == true);
+  REQUIRE(pval.value() == 99);
 }
