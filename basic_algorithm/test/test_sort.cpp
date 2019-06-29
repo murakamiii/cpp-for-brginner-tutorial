@@ -61,8 +61,6 @@ TEST_CASE("ソート", "[assert_sorted]") {
 
 TEST_CASE("ベクタースタック", "[assert_vector_stack]") { 
   std::vector<int> vec_empty{};
-  std::vector<int> vec_one{12};
-  std::vector<int> vec_two{2, 1};
   
   mystd::VectorStack<int> vecStack(vec_empty);
   auto pval = vecStack.pop();
@@ -81,6 +79,28 @@ TEST_CASE("ベクタースタック", "[assert_vector_stack]") {
   REQUIRE(pval.has_value() == true);
   REQUIRE(pval.value() == 100);
   pval = vecStack.pop();
+  REQUIRE(pval.has_value() == true);
+  REQUIRE(pval.value() == 99);
+}
+
+TEST_CASE("連結リストスタック", "[assert_linkedlist_stack]") {  
+  mystd::LLStack<int> lStack{};
+  auto pval = lStack.pop();
+  REQUIRE(pval.has_value() == false);
+  
+  lStack.push(0);
+  pval = lStack.pop();
+  REQUIRE(pval.has_value() == true);
+  REQUIRE(pval.value() == 0);
+  pval = lStack.pop();
+  REQUIRE(pval.has_value() == false);
+
+  lStack.push(99);
+  lStack.push(100);
+  pval = lStack.pop();
+  REQUIRE(pval.has_value() == true);
+  REQUIRE(pval.value() == 100);
+  pval = lStack.pop();
   REQUIRE(pval.has_value() == true);
   REQUIRE(pval.value() == 99);
 }

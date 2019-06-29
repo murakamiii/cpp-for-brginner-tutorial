@@ -3,6 +3,7 @@
 
 #include <optional>
 #include <vector>
+#include <memory>
 
 namespace mystd
 {
@@ -37,6 +38,42 @@ namespace mystd
 
     private:
       std::vector<Element> container;
+  };
+
+  template <typename Element> struct LinkedList
+  {
+    std::unique_ptr<LinkedList<Element>> next;
+    const Element value;
+
+    LinkedList(LinkedList<Element> next, Element value)
+      :next(new LinkedList<Element>(next)), value(value){}
+    LinkedList(std::unique_ptr<LinkedList<Element>> next, Element value)
+      :next(std::move(next)), value(value){}
+  };
+
+  template <typename Element> struct LLStack : Stack<Element>
+  {
+    LLStack(): head(nullptr){}
+    
+    void push(Element ele)
+    {
+      head.reset(new LinkedList<Element>(std::move(head), ele));
+    }
+
+    std::optional<Element> pop() 
+    {
+      if (head == nullptr)
+      {
+        return std::nullopt;
+      }
+      auto ele = head->value;
+      head = std::move(head->next);
+
+      return ele;
+    }
+
+    private:
+      std::unique_ptr<LinkedList<Element>> head;
   };
 } // namespace mystd
 

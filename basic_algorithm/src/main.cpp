@@ -25,4 +25,25 @@ int main() {
   } else {
     std::cout << "VectorStack.pop: null" << "\n";
   }
+
+  mystd::LLStack<int> lStack{};
+  auto lp = lStack.pop();
+  if (lp.has_value()) {
+    std::cout << "LLStack.pop: " << lp.value() << "\n";
+  } else {
+    std::cout << "LLStack.pop: null" << "\n";
+  }
+  lStack.push(1111);
+  lStack.push(2222);
+  lp = lStack.pop();
+  if (lp.has_value()) {
+    std::cout << "LLStack.pop: " << lp.value() << "\n";
+  } else {
+    std::cout << "LLStack.pop: null" << "\n";
+  }
+  lp = lStack.pop();
+  if (lp.has_value()) {
+    std::cout << "LLStack.pop: " << lp.value() << "\n";
+  } else {
+    std::cout << "LLStack.pop: null" << "\n";}
 }
